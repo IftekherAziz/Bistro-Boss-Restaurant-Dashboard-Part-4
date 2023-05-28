@@ -15,6 +15,9 @@ const NavBar = () => {
         console.log(error);
       });
   };
+
+
+
   const navOptions = (
     <>
       <li>
@@ -39,7 +42,7 @@ const NavBar = () => {
         <Link to="/dashboard/mycart">
           <button className="btn gap-2">
             <FaShoppingCart></FaShoppingCart>
-            <div className="badge badge-secondary">+99</div>
+            <div className="badge badge-primary">+99</div>
           </button>
         </Link>
       </li>
