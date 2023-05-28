@@ -37,22 +37,22 @@ async function run() {
         })
 
         // GET api/reviews
-        // app.get('/reviews', async (req, res) => {
-        //     const result = await reviewCollection.find().toArray();
-        //     res.send(result);
-        // })
+        app.get('/reviews', async (req, res) => {
+            const result = await reviewCollection.find().toArray();
+            res.send(result);
+        })
 
         // cart collection apis
-        // app.get('/carts', async (req, res) => {
-        //     const email = req.query.email;
+        app.get('/carts', async (req, res) => {
+            const email = req.query.email;
 
-        //     if (!email) {
-        //         res.send([]);
-        //     }
-        //     const query = { email: email };
-        //     const result = await cartCollection.find(query).toArray();
-        //     res.send(result);
-        // });
+            if (!email) {
+                res.send([]);
+            }
+            const query = { email: email };
+            const result = await cartCollection.find(query).toArray();
+            res.send(result);
+        });
 
         // POST api/carts
         app.post('/carts', async (req, res) => {
