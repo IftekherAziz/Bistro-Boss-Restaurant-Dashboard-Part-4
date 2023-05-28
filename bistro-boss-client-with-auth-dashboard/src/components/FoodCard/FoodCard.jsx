@@ -1,9 +1,59 @@
-const FoodCard = ({ item }) => {
-  const { name, price, image, recipe } = item;
+import { useContext } from "react";
+import { AuthContext } from "../../providers/AuthProviders";
+import Swal from "sweetalert2";
+import { useLocation, useNavigate } from "react-router-dom";
 
-  const handleAddToCart = item  => {
+const FoodCard = ({ item }) => {
+  const { name, price, image, recipe, _id } = item;
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Add to cart: Post Data in MongoDB
+  const handleAddToCart = (item) => {
     console.log(item);
-  }
+    if (user && user.email) {
+      const cartItem = {
+        menuItemId: _id,
+        name,
+        image,
+        price,
+        email: user.email,
+      };
+      fetch("http://localhost:5000/carts", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(cartItem),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.insertedId) {
+           Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Food added on the cart.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        });
+    } else {
+      Swal.fire({
+        title: "Please login to order the food",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Login now!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login", { state: { from: location } });
+        }
+      });
+    }
+  };
   return (
     <div className="card w-96 bg-zinc-50 shadow">
       <figure>
@@ -18,7 +68,7 @@ const FoodCard = ({ item }) => {
         <div className="card-actions justify-end">
           <button
             onClick={() => handleAddToCart(item)}
-             className="btn btn-outline text-yellow-600  border-0 border-b-4 border-yellow-600 mt-4"
+            className="btn btn-outline text-yellow-600  border-0 border-b-4 border-yellow-600 mt-4"
           >
             Add to Cart
           </button>
