@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 const MyCart = () => {
   const [cart, refetch] = useCart();
   console.log(cart);
+  // How does reduce work:
   const totalPrice = cart.reduce((sum, item) => item.price + sum, 0);
   const handleDelete = (item) => {
     Swal.fire({
@@ -22,7 +23,7 @@ const MyCart = () => {
           method: "DELETE",
         })
           .then((res) => res.json())
-          .then((data) => {
+          .then((data) => {         
             if (data.deletedCount > 0) {
               refetch();
               Swal.fire("Deleted!", "Your file has been deleted.", "success");
@@ -37,9 +38,9 @@ const MyCart = () => {
       <Helmet>
         <title>Bistro Boss | My Cart</title>
       </Helmet>
-      <div className=" font-semibold h-[60px] flex justify-evenly items-center">
-        <h3 className="text-3xl mr-5">Total Items: {cart.length}</h3>
-        <h3 className="text-3xl mr-5">Total Price: ${totalPrice}</h3>
+      <div className="border mb-3 bg-white rounded px-3 font-semibold h-[60px] flex justify-between items-center">
+        <h3 className="text-xl ">Total Items: {cart.length}</h3>
+        <h3 className="text-xl">Total Price: ${totalPrice}</h3>
         <button className="btn btn-warning btn-md">Pay Now</button>
       </div>
       <div className="overflow-x-auto w-full">
